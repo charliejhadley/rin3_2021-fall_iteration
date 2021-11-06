@@ -11,15 +11,21 @@ library(tidyverse)
 # Import files
 
 ```{r}
-list.files("data/", pattern = ".csv", full.names  = TRUE)
+target_data_files <- list.files("data", pattern = ".csv", full.names  = TRUE)
 ```
-
 
 
 ## Using map
 
+```{r}
+gapminder_data <- map(target_data_files, read_csv) %>% 
+  bind_rows()
+```
 
 
+```{r}
+map_df(target_data_files, read_csv)
+```
 
 
 
@@ -34,13 +40,18 @@ list.files("data/", pattern = ".csv", full.names  = TRUE)
 
 As of [July 2021 the read_*() functions can be given a vector of files paths](https://www.tidyverse.org/blog/2021/07/readr-2-0-0/#reading-multiple-files-at-once).
 
+```{r}
+read_csv(target_data_files)
+```
+
+
 
 # Making charts
 
 ```{r}
 gg_continent_life_exp <- function(continent_filter){
   
-  gapminder %>% 
+  gg_chart <- gapminder_data %>% 
     filter(continent == continent_filter) %>% 
     ggplot(aes(x = year,
                y = lifeExp,
@@ -48,7 +59,22 @@ gg_continent_life_exp <- function(continent_filter){
     geom_line() +
     theme(legend.position = "bottom")
   
+  ggsave(str_glue("images/gapminder_{continent_filter}.png"),
+         gg_chart)
 }
 ```
+
+```{r}
+gg_continent_life_exp("Europe")
+```
+
+```{r}
+gapminder_data %>% 
+  pull(continent) %>% 
+  unique() %>% 
+  walk(gg_continent_life_exp)
+```
+
+
 
 
