@@ -1,0 +1,54 @@
+---
+title: "Gapminder Analysis"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+# Import files
+
+```{r}
+list.files("data/", pattern = ".csv", full.names  = TRUE)
+```
+
+
+
+## Using map
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Using a vector of files
+
+As of [July 2021 the read_*() functions can be given a vector of files paths](https://www.tidyverse.org/blog/2021/07/readr-2-0-0/#reading-multiple-files-at-once).
+
+
+# Making charts
+
+```{r}
+gg_continent_life_exp <- function(continent_filter){
+  
+  gapminder %>% 
+    filter(continent == continent_filter) %>% 
+    ggplot(aes(x = year,
+               y = lifeExp,
+               color = country)) +
+    geom_line() +
+    theme(legend.position = "bottom")
+  
+}
+```
+
+
