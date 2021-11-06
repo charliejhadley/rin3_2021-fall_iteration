@@ -1,11 +1,11 @@
 library(tidyverse)
 library(gapminder)
 
-export_gapminder_year <- function(year){
+export_gapminder_year <- function(export_year){
   
   gapminder %>% 
-    filter(year == year) %>% 
-    write_csv(file.path("data", str_glue("gapminder_{year}.csv")))
+    filter(year == export_year) %>% 
+    write_csv(file.path("data", str_glue("gapminder_{export_year}.csv")))
   
   
 }
